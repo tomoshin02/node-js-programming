@@ -1,0 +1,22 @@
+{
+  "name": "lesson3",
+  "version": "1.0.0",
+  "description": "learn web development with nodejs",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tomoshin02/node-js-programming.git"
+  },
+  "author": "tomoshin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tomoshin02/node-js-programming/issues"
+  },
+  "homepage": "https://github.com/tomoshin02/node-js-programming#readme",
+  "dependencies": {
+    "zipcode-ja": "0.0.7"
+  }
+}
