@@ -1,25 +1,28 @@
-const routeResponseMap = {
-  "/info": "<h1>Info page</h1>",
-  "/contact": "<h1>Contact Us</h1>"
-};
 const port = 3000,
       http = require("http"),
       httpStatus = require("http-status-codes"),
-      app = http.createServer((req,res) => {
-  console.log("リクエストを受信しました。");
+      fs = require("fs");
 
+const routeMap = {
+  "/": "views/index.html"
+};
+
+const app = http.createServer((req,res) => {
   res.writeHead(httpStatus.OK, {
     "Content-type": "text/html"
   });
 
-  let messageBody = "The post successed!",
-      HTMLmessage = `<h1>${messageBody}</h1>`;
-  if (routeResponseMap[req.url]) {
-    res.end(routeResponseMap[req.url]);
+  
+  if (routeMap[req.url]) {
+    fs.readFile(routeMap[req.url], (error,data) => {
+      res.write(data);
+      res.end();
+    });
   } else {
+    let messageBody = "Sorry, This page is not found.",
+    HTMLmessage = `<h1>${messageBody}</h1>`;
     res.end(HTMLmessage);
-  }
-  console.log(`レスポンスを送信しました。: ${HTMLmessage}`);
+  };
 });
 
 app.listen(port);
