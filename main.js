@@ -3,26 +3,27 @@ const port = 3000,
       httpStatus = require("http-status-codes"),
       fs = require("fs");
 
-const routeMap = {
-  "/": "views/index.html"
+const getViewUrl = (url) => {
+  return `views${url}.html`;
 };
 
-const app = http.createServer((req,res) => {
-  res.writeHead(httpStatus.OK, {
-    "Content-type": "text/html"
-  });
-
-  
-  if (routeMap[req.url]) {
-    fs.readFile(routeMap[req.url], (error,data) => {
-      res.write(data);
-      res.end();
-    });
-  } else {
-    let messageBody = "Sorry, This page is not found.",
+let messageBody = "Sorry, This page is not found.",
     HTMLmessage = `<h1>${messageBody}</h1>`;
-    res.end(HTMLmessage);
-  };
+
+const app = http.createServer((req,res) => {
+  let viewUrl = getViewUrl(req.url);
+  fs.readFile(viewUrl, (error,data) => {
+    if (error) {
+      res.writeHead(httpStatus.NOT_FOUND);
+      res.write(HTMLmessage);
+    } else {
+      res.writeHead(httpStatus.OK, {
+        "Content-type": "text/html"
+      });
+      res.write(data);
+    };
+    res.end();
+  });
 });
 
 app.listen(port);
