@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/tomoshin02/node-js-programming#readme",
   "dependencies": {
-    "zipcode-ja": "0.0.7"
+    "http-status-codes": "^1.4.0"
   }
 }
