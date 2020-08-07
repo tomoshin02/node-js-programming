@@ -1,39 +1,50 @@
 const port = 3000,
       http = require("http"),
       httpStatus = require("http-status-codes"),
-      fs = require("fs"),
       router = require("./router"),
-      plainTextContentType = {
-    "Content-type": "text/plain"
-      },
-      htmlContentType = {
-        "Content-type": "text/html"
-      };
+      contentTypes = require("./contentTypes"),
+      utils = require("./utils");
 
-const customReadFile = (file,res) => {
-  fs.readFile(`./${file}`, (errors, data) => {
-    if (errors) {
-      console.log("Error reading the file...")
-    }
-    res.end(data);
-  });
-};
-
-router.get("/",(req,res) => {
-  res.writeHead(httpStatus.OK, plainTextContentType);
-  res.end("INDEX");
+router.get("/", (req,res) => {
+  res.writeHead(httpStatus.OK, contentTypes.html);
+  utils.getFile("views/index.html", res);
 });
-
-router.get("/index.html", (req,res) => {
-  res.writeHead(httpStatus.OK, htmlContentType);
-  customReadFile("views/index.html", res);
+router.get("/courses.html", (req,res) => {
+  res.writeHead(httpStatus.OK, contentTypes.html);
+  utils.getFile("views/courses.html", res);
 });
-
+router.get("/contact.html", (req,res) => {
+  res.writeHead(httpStatus.OK, contentTypes.html);
+  utils.getFile("views/contact.html", res);
+});
 router.post("/", (req,res) => {
-  res.writeHead(httpStatus.OK, plainTextContentType);
-  res.end("POSTED");
+  res.writeHead(httpStatus.OK, contentTypes.html);
+  utils.getFile("views/thanks.html", res);
+});
+router.get("/people.jpg", (req,res) => {
+  res.writeHead(httpStatus.OK, contentTypes.jpg);
+  utils.getFile("public/images/people.jpg", res);
+});
+router.get("/product.jpg", (req,res) => {
+  res.writeHead(httpStatus.OK, contentTypes.jpg);
+  utils.getFile("public/images/product.jpg", res);
+});
+router.get("/graph.png", (req,res) => {
+  res.writeHead(httpStatus.OK, contentTypes.png);
+  utils.getFile("public/images/graph.png", res);
+});
+router.get("/confetti-cuisine.css", (req,res) => {
+  res.writeHead(httpStatus.OK, contentTypes.css);
+  utils.getFile("public/css/confetti-cuisine.css", res);
+});
+router.get("/bootstrap.css", (req,res) => {
+  res.writeHead(httpStatus.OK, contentTypes.css);
+  utils.getFile("public/css/bootstrap.min.css", res);
+});
+router.get("/confetti-cuisine.js", (req,res) => {
+  res.writeHead(httpStatus.OK, contentTypes.js);
+  utils.getFile("public/js/confetti-cuisine.js", res);
 });
 
 http.createServer(router.handle).listen(port);
-console.log("サーバーが起動しています。");
-console.log(`ポート${3000}を監視中です。`);
+console.log(`The server is listening on port number :${port}`);
