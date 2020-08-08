@@ -1,10 +1,10 @@
 const express = require("express"),
       app = express(),
-      homeController = require("./controllers/homeController");
-      
+      homeController = require("./controllers/homeController"),
+      errorController = require("./controllers/errorController");
+
 const layouts = require("express-ejs-layouts");
 app.use(layouts);
-
 app.set("view engine", "ejs");
 app.set("port", process.env.PORT || 3000);
 app.use(express.urlencoded({
@@ -12,11 +12,18 @@ app.use(express.urlencoded({
 }));
 app.use(express.json());
 
+app.use(express.static("public"));
+
 app.use(homeController.urlLogs);
 app.get("/", homeController.helloWorld);
 app.post("/",homeController.PostLoggingSuccsessResponse);
 app.get("/items/:vegetable", homeController.sendReqParam);
 app.get("/name/:myName", homeController.respondWithName);
+
+app.use(errorController.logErrors);
+app.use(errorController.respondNoResourceFound);
+app.use(errorController.respondInternalServerError);
+
 app.listen(app.get("port"), () => {
   console.log(`The express server has started and is lisning on port :${app.get("port")}`);
 });
