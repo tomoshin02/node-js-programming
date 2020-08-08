@@ -14,3 +14,7 @@ exports.PostLoggingSuccsessResponse = (req,res) => {
 exports.helloWorld = (req,res) => {
   res.send("Hello express!")
 }
+exports.respondWithName = (req,res) => {
+  let paramsName = req.params.myName;
+  res.render("index",{name:paramsName});
+}
