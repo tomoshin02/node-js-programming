@@ -3,11 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/confetti-cuisine.css">
+  <title>Confetti Cuisine</title>
 </head>
 <body>
-  <div id="nav"></div>
+  <div id="nav">
+    <div class="row">
+      <div class="col-sm nav-align"><h1 id="title">Confetti Cuisine</h1></div>
+      <div class="col-sm nav-align">
+        <a href="/"><span class="button">Home</span></a>
+        <a href="/courses"><span class="button">Courses</span></a>
+        <a href="/contact"><span class="button">Contact</span></a>
+      </div>
+    </div>
+  </div>
   <%- body %>
-  <div id="footer"></div>
 </body>
 </html>
