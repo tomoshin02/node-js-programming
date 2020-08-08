@@ -20,9 +20,8 @@ app.get("/courses", homeController.showCourses);
 app.get("/contact", homeController.showSignUp);
 app.post("/contact",homeController.postedSignUpForm);
 
-app.use(errorController.logErrors);
-app.use(errorController.respondNoResourceFound);
-app.use(errorController.respondInternalServerError);
+app.use(errorController.pageNotFoundError);
+app.use(errorController.internalServerError);
 
 app.listen(app.get("port"), () => {
   console.log(`The express server has started and is lisning on port :${app.get("port")}`);

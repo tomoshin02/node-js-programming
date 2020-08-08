@@ -8,12 +8,12 @@
       <h3>
         Our Courses:
       </h3>
-      <ul>
-        <li>Bread Making</li>
-        <li>Pasta Milan</li>
-        <li>Dark Chocolate Delight</li>
-      </ul>
-      <a href="/contact">Contact Us</a>today!
+      <% offeredCourses.forEach(course => { %>
+        <h5><%= course.title %></h5>
+        <span>$<%= course.cost %></span>
+      <% }); %>
+      <br>
+      <p><a href="/contact">Contact Us</a> today!</p>
     </div>
   </div>
 </div>
