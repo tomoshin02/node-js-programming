@@ -3,12 +3,15 @@ const port = 3000,
       app = express();
 
 app.get("/", (req,res) => {
-  console.log(req.params);
-  console.log(req.body);
-  console.log(req.url);
-  console.log(req.query);
   res.send("Hello express!")
-})
-.listen(port, () => {
+});
+app.get("/items", (req,res) => {
+  res.send("Item list");
+});
+app.get("/items/:vegetable", (req,res) => {
+  let veg = req.params.vegetable;
+  res.send(`This page for ${veg}`);
+});
+app.listen(port, () => {
   console.log(`The express server has started and is lisning on port :${port}`);
 })
