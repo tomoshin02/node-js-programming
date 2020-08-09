@@ -3,20 +3,44 @@ const express = require("express"),
       homeController = require("./controllers/homeController"),
       errorController = require("./controllers/errorController");
 
-const MongoDB = require("mongodb").MongoClient,
-      dbURL = "mongodb://localhost:27017",
-      dbName = "recepi_db";
+const mongoose = require("mongoose");
+mongoose.connect(
+  "mongodb://localhost:27017/recipe_db",
+  {useNewUrlParser: true}
+);
 
-MongoDB.connect(dbURL, (error, client) => {
-  if (error) throw error;
-  let db = client.db(dbName);
-  db.collection("contacts")
-    .find()
-    .toArray((error, data) => {
-      if (error) throw error;
-      console.log(data);
-    });
+const db = mongoose.connection;
+db.once("open", () => {
+  console.log("Connected to MongoDB via Mongoose.");
 });
+
+const subscriberSchema = mongoose.Schema({
+  name: String,
+  email: String,
+  zipCode: Number
+});
+const Subscriber =mongoose.model("Subscriber", subscriberSchema);
+
+var subscriber1 = new Subscriber({
+  name: "Jon Wexler",
+  email: "jon@jonwexler.com"
+});
+
+subscriber1.save((error, savedDocument) => {
+  if (error) console.log(error);
+  console.log(savedDocument);
+});
+
+Subscriber.create(
+  {
+    name: "Satoshi Akazawa",
+    email: "satoshi@aworks.jp"
+  },
+  function (error, savedDocument) {
+    if (error) console.log(error);
+    console.log(savedDocument);
+  }
+);
 
 const layouts = require("express-ejs-layouts");
 app.use(layouts);
