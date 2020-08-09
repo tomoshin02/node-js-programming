@@ -3,6 +3,21 @@ const express = require("express"),
       homeController = require("./controllers/homeController"),
       errorController = require("./controllers/errorController");
 
+const MongoDB = require("mongodb").MongoClient,
+      dbURL = "mongodb://localhost:27017",
+      dbName = "recepi_db";
+
+MongoDB.connect(dbURL, (error, client) => {
+  if (error) throw error;
+  let db = client.db(dbName);
+  db.collection("contacts")
+    .find()
+    .toArray((error, data) => {
+      if (error) throw error;
+      console.log(data);
+    });
+});
+
 const layouts = require("express-ejs-layouts");
 app.use(layouts);
 app.set("view engine", "ejs");
