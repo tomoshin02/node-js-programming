@@ -7,6 +7,7 @@ const express = require("express"),
       layouts = require("express-ejs-layouts"),
       subscribersController = require("./controllers/subscriberController");
 
+mongoose.Promise = global.Promise;
 mongoose.connect(
   "mongodb://localhost:27017/recipe_db",
   {useNewUrlParser: true}
