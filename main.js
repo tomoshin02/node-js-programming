@@ -5,7 +5,8 @@ const express = require("express"),
       mongoose = require("mongoose"),
       Subscriber =require("./models/subscriber"),
       layouts = require("express-ejs-layouts"),
-      subscribersController = require("./controllers/subscriberController");
+      subscribersController = require("./controllers/subscriberController"),
+      usersController = require("./controllers/usersController");
 
 mongoose.Promise = global.Promise;
 mongoose.connect(
@@ -37,6 +38,7 @@ app.get("/subscribers", subscribersController.getAllSubscribers,
 
 app.get("/contact", subscribersController.getSubscriptionPage);
 app.post("/subscribe", subscribersController.saveSubscriber);
+app.get("/users", usersController.index);
 
 app.use(errorController.pageNotFoundError);
 app.use(errorController.internalServerError);
