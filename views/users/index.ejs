@@ -5,12 +5,14 @@
         <th>Name</th>
         <th>Email</th>
         <th>Zip Code</th>
-      <tr>
+      </tr>
     </thead>
     <tbody>
     <% users.forEach(user => { %>
       <tr>
-        <%= user.fullName %>
+        <a href="<%=`/users/${user._id}` %>">
+          <%= user.fullName %>
+        </a>
         <%= user.Email %>
         <%= user.zipCode %>
       </tr>
