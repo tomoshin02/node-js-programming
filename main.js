@@ -6,7 +6,8 @@ const express = require("express"),
       Subscriber =require("./models/subscriber"),
       layouts = require("express-ejs-layouts"),
       subscribersController = require("./controllers/subscriberController"),
-      usersController = require("./controllers/usersController");
+      usersController = require("./controllers/usersController"),
+      router = express.Router();
 
 mongoose.Promise = global.Promise;
 mongoose.connect(
@@ -28,20 +29,24 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
-app.get("/", homeController.showIndex);
-app.get("/courses", homeController.showCourses);
-app.get("/subscribers", subscribersController.getAllSubscribers,
+app.use("/", router);
+router.get("/", homeController.showIndex);
+router.get("/courses", homeController.showCourses);
+router.get("/subscribers", subscribersController.getAllSubscribers,
     (req,res,next) => {
       console.log(req.data);
       res.render("subscribers", {subscribers: req.data});
     });
 
-app.get("/contact", subscribersController.getSubscriptionPage);
-app.post("/subscribe", subscribersController.saveSubscriber);
-app.get("/users", usersController.index, usersController.indexView);
+router.get("/contact", subscribersController.getSubscriptionPage);
+router.post("/subscribe", subscribersController.saveSubscriber);
+router.get("/users", usersController.index, usersController.indexView);
+router.get("/users/new", usersController.new);
+router.post("/users/create", usersController.create,usersController.redirectView);
+router.get("/users/:id", usersController.show,usersController.showView);
 
-app.use(errorController.pageNotFoundError);
-app.use(errorController.internalServerError);
+router.use(errorController.pageNotFoundError);
+router.use(errorController.internalServerError);
 
 app.listen(app.get("port"), () => {
   console.log(`The express server has started and is lisning on port :${app.get("port")}`);

@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const e = require("express");
 
 module.exports = {
   index: (req,res, next) => {
@@ -14,5 +15,49 @@ module.exports = {
   },
   indexView: (req,res) => {
     res.render("users/index");
+  },
+  new: (req,res) => {
+    res.render("users/new");
+  },
+  create: (req,res,next) => {
+    let userParams = {
+      name: {
+        first: req.body.first,
+        last: req.body.last
+      },
+      email: req.body.email,
+      password: req.body.email,
+      zipCode: req.body.zipCode
+    };
+    User.create(userParams)
+      .then(user => {
+        res.locals.redirect = "/users";
+        res.locals.user = user;
+        next();
+      })
+      .catch(error => {
+        console.log(`Error saving user: ${error.message}`);
+        next(error);
+      });
+  },
+  redirectView: (req,res,next) => {
+    let redirectPath = res.locals.redirect;
+    if (redirectPath) res.redirect(redirectPath);
+    else next();
+  },
+  show: (req,res,next) => {
+    let userId = req.params.id;
+    User.findById(userId)
+      .then(user => {
+        res.locals.user = user;
+        next();
+      })
+      .catch(error => {
+      console.log(`Error fetching users by ID: ${error.message}`);
+      next(error);
+      });
+  },
+  showView: (req,res) => {
+    res.render("users/show");
   }
 };
