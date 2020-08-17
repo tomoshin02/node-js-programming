@@ -1,13 +1,15 @@
+"use strict";
+
 const express = require("express"),
-      app = express(),
-      errorController = require("./controllers/errorController"),
-      homeController = require("./controllers/homeController"),
-      mongoose = require("mongoose"),
-      Subscriber =require("./models/subscriber"),
-      layouts = require("express-ejs-layouts"),
-      subscribersController = require("./controllers/subscriberController"),
-      usersController = require("./controllers/usersController"),
-      router = express.Router();
+app = express(),
+router = express.Router(),
+layouts = require("express-ejs-layouts"),
+mongoose = require("mongoose"),
+errorController = require("./controllers/errorController"),
+homeController = require("./controllers/homeController"),
+subscribersController = require("./controllers/subscriberController"),
+usersController = require("./controllers/usersController"),
+Subscriber =require("./models/subscriber");
 
 mongoose.Promise = global.Promise;
 mongoose.connect(
@@ -18,6 +20,12 @@ const db = mongoose.connection;
 db.once("open", () => {
   console.log("Connected to MongoDB via Mongoose.");
 });
+const methodOverride = require("method-override");
+router.use(
+  methodOverride("_method", {
+    methods: ["POST", "GET"]
+  })
+);
 
 app.set("view engine", "ejs");
 app.use(layouts);
@@ -44,6 +52,8 @@ router.get("/users", usersController.index, usersController.indexView);
 router.get("/users/new", usersController.new);
 router.post("/users/create", usersController.create,usersController.redirectView);
 router.get("/users/:id", usersController.show,usersController.showView);
+router.get("/users/:id/edit", usersController.edit);
+router.put("/users/:id/update", usersController.update,usersController.redirectView);
 
 router.use(errorController.pageNotFoundError);
 router.use(errorController.internalServerError);
