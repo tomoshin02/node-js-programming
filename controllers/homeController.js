@@ -1,3 +1,14 @@
+
+module.exports= {
+  showIndex: (req,res) => {
+    res.render("index");
+  },
+  showCourses: (req,res) => {
+    res.render("courses", {
+      offeredCourses: courses
+    });
+  }
+}
 var courses = [
   {
     title: "Event Driven Cakes",
@@ -12,14 +23,3 @@ var courses = [
     cost: "10"
   },
 ];
-
-module.exports= {
-  showIndex: (req,res) => {
-    res.render("index");
-  },
-  showCourses: (req,res) => {
-    res.render("courses", {
-      offeredCourses: courses
-    });
-  }
-}
