@@ -3,7 +3,8 @@ const mongoose = require("mongoose"),
       {Schema} = mongoose;
 
 
-var userSchema = new Schema({
+var userSchema = new Schema(
+  {
   name: {
     first:{
       type: String,
@@ -30,7 +31,8 @@ var userSchema = new Schema({
     required: true
   },
   courses: [{type: Schema.Types.ObjectId, ref: "Course"}],
-  subscribedAccount: {type: Schema.Types.ObjectId,ref: "Subscriber"}
+  subscribedAccount: {
+    type: Schema.Types.ObjectId,ref: "Subscriber"}
 },{
   timestamps: true
 });
@@ -51,10 +53,10 @@ userSchema.pre("save", function (next) {
     .catch(error => {
       console.log(`Error in connecting subscriber: ${error.message}`);
       next(error);
-    })
+    });
   } else {
     next();
   }
-})
+});
 
 module.exports = mongoose.model("User", userSchema);
