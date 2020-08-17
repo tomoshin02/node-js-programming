@@ -7,6 +7,7 @@ module.exports = {
     .then((subscribers) => {
       res.render("subscribers", {
         subscribers: subscribers
+        //findクエリの結果をsubscribers(青)に格納してsubscribersオブジェクト（紫）の値にしてる
       });
     })
     .catch((error) => {
