@@ -1,11 +1,10 @@
 const User = require("../models/user");
-const user = require("../models/user");
 
 module.exports = {
   index: (req,res, next) => {
     User.find()
     .then(users => {
-      res.locals.users = users;
+      res.locals.users = users; // res.localsはレスポンスを送るまで有効、今回は下のindexviewに実際は値が渡っている。
       next();
     })
     .catch(error => {
@@ -14,7 +13,7 @@ module.exports = {
     });
   },
   indexView: (req,res) => {
-    res.render("users/index");
+    res.render("users/index"); //res.localsを使うことでindexviewアクションを編集せずに描画内容を変更できる。
   },
   new: (req,res) => {
     res.render("users/new");
@@ -30,10 +29,11 @@ module.exports = {
       zipCode: req.body.zipCode
     };
     User.create(userParams)
-      .then(user => {
-        res.locals.redirect = "/users";
-        res.locals.user = user;
-        next();
+      .then(
+        user => {
+        res.locals.redirect = "/users",
+        res.locals.user = user; //ユーザーの作成可否を判定をしている？
+        next()
       })
       .catch(error => {
         console.log(`Error saving user: ${error.message}`);
