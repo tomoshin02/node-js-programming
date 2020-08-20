@@ -2,7 +2,7 @@
 
 body {
   margin: 0;
-  padding-top: 150px;
+  padding-top: 120px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #625a56;
 }
@@ -11,7 +11,7 @@ body {
   width: 100%;
   height: 110px;
   padding: 20px 0 5px 0;
-  border-bottom: solid 8px #ee3114;
+  border-bottom: solid 8px #697acb;
   box-shadow: 10px 10px 10px #ccc;
   position: absolute;
   top: 0;
@@ -47,7 +47,7 @@ a {
 }
 
 .button {
-  background-color: #ed4a0f;
+  background-color: #3d41b4;
   padding: 0.3vw 3vw;
   border-radius: 2px;
   cursor: pointer;
@@ -56,6 +56,44 @@ a {
 }
 
 .button:hover {
-  background-color: #ffb99f;
-  color: #ed4a0f;
+  background-color: #697acb;
+}
+
+.subscriber {
+  padding: 10px 0px;
+  border-bottom: 1px solid lightgray;
+}
+
+.subscriber p {
+  margin: 0;
+}
+
+.list-container {
+  padding: 0 20px;
+  border: 3px solid #697acb;
+  border-radius: 1px;
+}
+
+.item-label {
+  font-weight: 600;
+  font-style: italic;
+  margin-right: 5px;
+}
+
+.subscription-form input {
+  display: block;
+  margin: 5px;
+}
+
+.data-form {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.data-form label {
+  margin: 5px 0 0 0;
+}
+
+.hidden-text {
+  -webkit-text-security: disc;
 }
