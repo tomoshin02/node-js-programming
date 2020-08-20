@@ -1,0 +1,16 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6"><img src="images/graph.png" alt="" /></div>
+    <div class="col-sm-6">
+      <h1>Reach out to us!</h1>
+      <p>Enter your email if you're interested to learn more:</p>
+      <form class="contact-form" action="<%=`/subscribers/${subscriber._id}/update?_method=PUT`%>" method="post">
+        <input type="text" name="name" placeholder="Name" value="<%=subscriber.name%>" required />
+        <input type="email" name="email" placeholder="Email" value="<%=subscriber.email%>" required />
+        <input type="text" name="zip-code" placeholder="Zip code" pattern="[0-9]5" />
+        <input class="button" type="submit" value="submit" value="<%=subscriber.zipCode%>" />
+      </form>
+      <p>We'll get back to you soon!</p>
+    </div>
+  </div>
+</div>
