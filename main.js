@@ -70,7 +70,9 @@ router.get("/courses", courseController.index,courseController.indexView);
 router.get("/courses/new", courseController.new);
 router.post("/courses/create", courseController.create,courseController.redirectView);
 router.get("/courses/:courseId",courseController.show,courseController.showView);
-
+router.get("/courses/:courseId/edit", courseController.edit);
+router.put("/courses/:courseId/update",courseController.update,courseController.redirectView)
+router.delete("/courses/:courseId/delete",courseController.delete,courseController.redirectView)
 
 router.use(errorController.pageNotFoundError);
 router.use(errorController.internalServerError);

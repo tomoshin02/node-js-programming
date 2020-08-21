@@ -61,5 +61,47 @@ module.exports = {
   },
   showView: (req,res) => {
     res.render("courses/show");
+  },
+  edit: (req,res,next) => {
+    let courseId = req.params.courseId;
+    Course.findById(courseId)
+    .then(course => {
+      res.render("courses/edit",{
+        course: course
+      });
+    })
+    .catch((error) => {
+      console.log(error.message);
+      next(error);
+    })
+  },
+  update: (req,res,next) => {
+    let courseId = req.params.courseId,
+        courseParams = {
+          title: req.body.title,
+          description: req.body.description,
+          zipCode: req.body.zipCode,
+          adress: req.body.adress,
+          cost: req.body.cost
+        };
+    Course.findByIdAndUpdate(courseId, {
+      $set: courseParams})
+    .then(course => {
+      res.locals.redirect = `/courses/${course._id}`;
+      res.locals.course = course;
+      next();
+    })
+    .catch((error) => {
+      console.log(error.message);
+      next(error);
+    });
+  },
+  delete: (req,res,next) => {
+    let courseId = req.params.courseId;
+    Course.findByIdAndRemove(courseId)
+    .then(() => {
+      res.locals.redirect ="/courses";
+      next();
+    });
   }
-}
+};
