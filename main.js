@@ -35,6 +35,24 @@ router.use(
   })
 );
 
+const expressSession = require("express-session"),
+      cookieParser = require("cookie-parser"),
+      connectFlash = require("connect-flash");
+router.use(cookieParser("secret_passcode"));
+router.use(expressSession({
+  secret: "secret_passcode",
+  cookie: {
+    maxAge: 4000000
+  },
+  resave: false,
+  saveUninitialized: false
+}));
+router.use(connectFlash());
+router.use((req,res,next) => {
+  res.locals.flashMessages = req.flash();
+  next();
+})
+
 app.set("view engine", "ejs");
 app.use(layouts);
 app.set("port", process.env.PORT || 3000);
