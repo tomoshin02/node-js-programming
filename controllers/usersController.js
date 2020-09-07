@@ -25,7 +25,7 @@ module.exports = {
         last: req.body.last
       },
       email: req.body.email,
-      password: req.body.email,
+      password: req.body.password,
       zipCode: req.body.zipCode
     };
     User.create(userParams)
@@ -109,5 +109,32 @@ module.exports = {
         res.locals.redirect = "/users";
         next();
       });
+  },
+  login: (req,res) => {
+    res.render("users/login");
+  },
+  authenticate: (req,res,next) => {
+    User.findOne({
+      email: req.body.email
+    })
+    .then(
+      user => {
+        if (user && user.password === req.body.password) {
+          console.log(user,user.password)
+          res.locals.redirect = `/users/${user._id}`;
+          req.flash("success", `${user.fullName}`);
+          res.locals.user = user;
+          next();
+        } else {
+          console.log(user,user.password)
+          req.flash("error","error");
+          res.locals.redirect = "/users/login";
+          next();
+        }
+      })
+    .catch(error => {
+      console.log(`Error logging in user: ${error.message}`)
+      next(error);
+    })
   }
 };
