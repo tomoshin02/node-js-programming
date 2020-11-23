@@ -1,4 +1,5 @@
 const mongoose = require("mongoose"),
+      bcrypt = require("bcrypt"),
       Subscriber = require("./subscriber"),
       {Schema} = mongoose;
 
@@ -52,7 +53,6 @@ userSchema.pre("save", function (next) {
     })
     .then(subscriber => {
       user.subscribedAccount = subscriber;
-      
       next();
     })
     .catch(error => {
@@ -63,5 +63,24 @@ userSchema.pre("save", function (next) {
     next();
   }
 });
+
+userSchema.pre("save", function(next) {
+  let user = this;
+  bcrypt
+  .hash(user.password, 10)
+  .then(hash => {
+    user.password = hash;
+    next();
+  })
+  .catch(error => {
+    console.log(error.message);
+    next(error);
+  });
+});
+
+userSchema.methods.passwordComparison = function(inputPassword) {
+  let user = this;
+  return bcrypt.compare(inputPassword, user.password);
+};
 
 module.exports = mongoose.model("User", userSchema);

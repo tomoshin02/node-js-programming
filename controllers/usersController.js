@@ -1,4 +1,5 @@
-const User = require("../models/user");
+const User = require("../models/user"),
+  {check, sanitizeBody, validationResult} = require('express-validator');
 
 module.exports = {
   index: (req,res, next) => {
@@ -117,17 +118,21 @@ module.exports = {
     User.findOne({
       email: req.body.email
     })
-    .then(
-      user => {
-        if (user && user.password === req.body.password) {
-          console.log(user,user.password)
-          res.locals.redirect = `/users/${user._id}`;
-          req.flash("success", `${user.fullName}`);
-          res.locals.user = user;
-          next();
+    .then(user => {
+        if (user) {
+          user.passwordComparison(req.body.password).then(passwordsMatch => {
+              if (passwordsMatch) {
+                res.locals.redirect = `/users/${user._id}`;
+                req.flash("success", `${user.fullName}`);
+                res.locals.user = user;
+              } else {
+                req.flash("error","error1");
+                res.locals.redirect = "/users/login";
+              }
+              next();
+            });
         } else {
-          console.log(user,user.password)
-          req.flash("error","error");
+          req.flash("error","error2");
           res.locals.redirect = "/users/login";
           next();
         }
@@ -136,5 +141,25 @@ module.exports = {
       console.log(`Error logging in user: ${error.message}`)
       next(error);
     })
+  },
+  validate: (req,res,next) => {
+    sanitizeBody("email")
+    .nomalizeEmail({
+      all_lowercase: true
+    }).trim();
+    check("email", "Email is invalid").isEmail();
+    check("zipCode", "Zip code is invalid").notEmpty().isInt().isLength({min: 7,max: 7}).equals(req.body.zipCode);
+    check("password", "Password cannot be empty").notEmpty();
+
+  const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      let messages = error.array().map(e => e.msg);
+      req.skip = true;
+      req.flash("error", messages.join(" and "));
+      res.locals.redirect = "/users/new";
+      next();
+    } else {
+      next();
+    }
   }
 };

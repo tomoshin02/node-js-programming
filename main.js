@@ -26,7 +26,6 @@ db.once("open", () => {
   console.log("Connected to MongoDB via Mongoose.");
 });
 const methodOverride = require("method-override");
-const subscriberController = require("./controllers/subscriberController");
 const subscriber = require("./models/subscriber");
 const courseController = require("./controllers/courseController");
 router.use(
@@ -51,13 +50,13 @@ router.use(connectFlash());
 router.use((req,res,next) => {
   res.locals.flashMessages = req.flash();
   next();
-})
+});
 
 app.set("view engine", "ejs");
 app.use(layouts);
 app.set("port", process.env.PORT || 3000);
 app.use(express.urlencoded({
-    extended:false
+  extended:false
 }));
 app.use(express.json());
 
@@ -66,21 +65,21 @@ app.use(express.static("public"));
 app.use("/", router);
 router.get("/", homeController.showIndex);
 
-router.get("/subscribers", subscriberController.index, subscribersController.indexview);
+router.get("/subscribers", subscribersController.index, subscribersController.indexview);
 router.get("/subscribers/register", subscribersController.subscribe);
 router.post("/subscribers/create", subscribersController.createSubscriber,
 subscribersController.redirectView);
-router.get("/subscribers/:subscriberId",subscriberController.show,subscriberController.showView);
+router.get("/subscribers/:subscriberId",subscribersController.show,subscribersController.showView);
 router.delete("/:subscriberId/delete",subscribersController.delete,subscribersController.redirectView);
-router.get("/subscribers/:subscriberId/edit", subscriberController.edit);
-router.put("/subscribers/:subscriberId/update", subscriberController.update,
-subscriberController.redirectView);
+router.get("/subscribers/:subscriberId/edit", subscribersController.edit);
+router.put("/subscribers/:subscriberId/update", subscribersController.update,
+subscribersController.redirectView);
 
 router.get("/users/login", usersController.login);
 router.post("/users/login", usersController.authenticate, usersController.redirectView);
 router.get("/users", usersController.index, usersController.indexView);
 router.get("/users/new", usersController.new);
-router.post("/users/create", usersController.create,usersController.redirectView);
+router.post("/users/create", usersController.validate, usersController.create,usersController.redirectView);
 router.get("/users/:id", usersController.show,usersController.showView);
 router.get("/users/:id/edit", usersController.edit);
 router.put("/users/:id/update", usersController.update,usersController.redirectView);
