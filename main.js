@@ -11,6 +11,13 @@ subscribersController = require("./controllers/subscriberController"),
 usersController = require("./controllers/usersController"),
 Subscriber =require("./models/subscriber");
 
+const passport = require("passport"),
+cookieParser = require("cookie-parser"),
+expressSession = require("express-session"),
+User = require("./models/user"),
+connectFlash = require("connect-flash");
+const userValidator = require("./validators/userValidator");
+
 mongoose.set('useCreateIndex', true);
 mongoose.set('useFindAndModify', false);
 mongoose.Promise = global.Promise;
@@ -34,6 +41,28 @@ router.use(
     methods: ["POST", "GET"]
   })
 );
+router.use(cookieParser("secretCuisine123"));
+router.use(expressSession({
+  secret: "secretCuisine123",
+  cookie: {
+    maxAge: 4000000
+  },
+  resave: false,
+  saveUninitialized: false
+}));
+router.use(passport.initialize());
+router.use(passport.session());
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+router.use(connectFlash());
+router.use((req, res, next) => {
+  res.locals.flashMessages = req.flash();
+  res.locals.loggedIn = req.isAuthenticated();
+  res.locals.currentUser = req.user;
+  next();
+});
+
 
 app.set("view engine", "ejs");
 app.use(layouts);
@@ -60,11 +89,16 @@ subscriberController.redirectView);
 
 router.get("/users", usersController.index, usersController.indexView);
 router.get("/users/new", usersController.new);
-router.post("/users/create", usersController.create,usersController.redirectView);
+router.post("/users/create", userValidator.validate,usersController.create,usersController.redirectView);
+router.get("/users/login", usersController.login);
+router.post("/users/login", usersController.authenticate);
+router.get("/users/logout", usersController.logout, usersController.redirectView);
+
 router.get("/users/:id", usersController.show,usersController.showView);
 router.get("/users/:id/edit", usersController.edit);
 router.put("/users/:id/update", usersController.update,usersController.redirectView);
 router.delete("/users/:id/delete", usersController.delete, usersController.redirectView)
+
 
 router.get("/courses", courseController.index,courseController.indexView);
 router.get("/courses/new", courseController.new);

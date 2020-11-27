@@ -1,4 +1,16 @@
 const User = require("../models/user");
+const passport = require("passport"),
+getUserParams = body => {
+  return {
+    name: {
+      first: body.first,
+      last: body.last
+    },
+    email: body.email,
+    password: body.password,
+    zipCode: body.zipCode
+  };
+};
 
 module.exports = {
   index: (req,res, next) => {
@@ -19,26 +31,19 @@ module.exports = {
     res.render("users/new");
   },
   create: (req,res,next) => {
-    let userParams = {
-      name: {
-        first: req.body.first,
-        last: req.body.last
-      },
-      email: req.body.email,
-      password: req.body.email,
-      zipCode: req.body.zipCode
-    };
-    User.create(userParams)
-      .then(
-        user => {
-        res.locals.redirect = "/users",
-        res.locals.user = user; //ユーザーの作成可否を判定をしている？
-        next()
-      })
-      .catch(error => {
-        console.log(`Error saving user: ${error.message}`);
-        next(error);
-      });
+    if (req.skip) next();
+    let newUser = new User(getUserParams(req.body));
+    User.register(newUser, req.body.password, (e, user) => {
+      if (user) {
+        req.flash("success", `${user.fullName}'s account created successfully!`);
+        res.locals.redirect = "/users";
+        next();
+      } else {
+        req.flash("error", `Failed to create user account because: ${e.message}.`);
+        res.locals.redirect = "/users/new";
+        next();
+      }
+    });
   },
   redirectView: (req,res,next) => {
     let redirectPath = res.locals.redirect;
@@ -104,5 +109,20 @@ module.exports = {
         res.locals.redirect = "/users";
         next();
       });
+  },
+  login: (req,res) => {
+    res.render("users/login");
+  },
+  authenticate: passport.authenticate("local", {
+    failureRedirect: "/users/login",
+    failureFlash: "Failed to login.",
+    successRedirect: "/",
+    successFlash: "Logged in!"
+  }),
+  logout: (req,res,next) => {
+    req.logout();
+    req.flash("success", "You have been logged out");
+    res.locals.redirect = "/";
+    next();
   }
 };
