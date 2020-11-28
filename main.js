@@ -22,7 +22,7 @@ mongoose.set('useCreateIndex', true);
 mongoose.set('useFindAndModify', false);
 mongoose.Promise = global.Promise;
 mongoose.connect(
-  "mongodb://localhost:27017/recipe_db",
+  "mongodb://mongo-db:27017/recipe_db",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true
