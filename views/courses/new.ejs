@@ -1,0 +1,24 @@
+<h1>Let's create your Original Course</h1>
+<form action="/courses/create" method="post">
+  <p>What cooking recipe do you offer?
+    <label for="inputTitle">Title:</label>
+    <input type="text" name="title" id="inputTitle" placeholder="Course title" autofocus>
+  </p>
+  <p>Please write your course flow
+    <label for="inputDescription">Description:</label>
+    <textarea type="text" name="description" id="inputDescription" cols="30" rows="10"></textarea>
+  </p>
+  <p>
+  Where are you going to hold this?
+  <label for="inputZipCode">Zip-Code:</label>
+  <input type="text" name="zipCode" id="inputZipCode" placeholder="Zipcode">
+  <label for="inputAdress">Adress:</label>
+  <input type="text" name="adress" id="inputAdress" placeholder="Adress">
+  </p>
+  <p>
+  How much would you like your course?
+  <label for="inputCost"></label>
+  <input type="text" name="cost" id="inputCost" placeholder="Cheaper is better">
+  </p>
+  <button type="submit">Submit</button>
+</form>

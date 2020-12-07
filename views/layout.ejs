@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/confetti-cuisine.css">
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/confetti-cuisine.css">
   <title>Confetti Cuisine</title>
 </head>
 <body>
@@ -17,7 +17,31 @@
         <a href="/subscribers"><span class="button">Subscribers</span></a>
         <a href="/users"><span class="button">Users</span></a>
       </div>
+      <div class="login">
+        <% if (loggedIn) { %>
+        <p>Logged in as 
+          <a href="<%=`/users/${currentUser._id}`%>">
+          <%= currentUser.fullName %></a>
+          <a href="/users/logout">Log out</a> 
+        </p>
+        <% } else { %>
+        <a href="/users/login">Log in</a>
+       <% } %>
+      </div>
     </div>
+  </div>
+  <div class="flashes">
+    <% if (flashMessages) { %>
+      <% if (flashMessages.success) { %>
+        <div class="flash success">
+        <%= flashMessages.success %>
+        </div>
+      <% } else if (flashMessages.error) { %>
+        <div class="flash error">
+        <%= flashMessages.error %>
+        </div>
+      <% } %>
+    <% } %>
   </div>
   <%- body %>
 </body>

@@ -10,11 +10,18 @@ const courseSchema = new mongoose.Schema({
     type: String,
     reuiqred: true
   },
-  items: [],
   zipCode: {
     type: Number,
     min: [1000000, "Zip code too short"],
     max: 9999999
+  },
+  adress: {
+    type: String,
+    required: true
+  },
+  cost: {
+    type: Number,
+    reqired: true
   }
 });
 

@@ -1,0 +1,21 @@
+version: '3.3'
+services: 
+  application:
+    build: .
+    ports:
+      - "8888:3000"
+    hostname: node-application
+    depends_on:
+      - mongo-db
+  
+  mongo-db:
+    image: "mongo:3.6"
+    ports:
+      - "27017:27017"
+    hostname: mongo-databese
+    volumes:
+      - db-volume:/data/db
+      - db-config-volume:/data/configdb
+volumes:
+  db-volume:
+  db-config-volume:
