@@ -1,3 +1,4 @@
+const { json } = require("body-parser");
 const User = require("../models/user");
 const passport = require("passport"),
 getUserParams = body => {
@@ -25,7 +26,7 @@ module.exports = {
     });
   },
   indexView: (req,res) => {
-    res.render("users/index"); //res.localsを使うことでindexviewアクションを編集せずに描画内容を変更できる。
+    res.render("users/index");
   },
   new: (req,res) => {
     res.render("users/new");
