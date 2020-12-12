@@ -1,10 +1,16 @@
 <!DOCTYPE html>
+
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script type="text/javascript" src="/js/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/bootstrap.bundle.min.js"></script>
+  <script type="text/javascript" src="/js/recipeApp.js"></script>
   <link rel="stylesheet" href="/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/css/confetti-cuisine.css">
+  <link rel="stylesheet" href="/css/confetti_cuisine.css">
+
   <title>Confetti Cuisine</title>
 </head>
 <body>
@@ -16,19 +22,22 @@
         <a href="/courses"><span class="button">Courses</span></a>
         <a href="/subscribers"><span class="button">Subscribers</span></a>
         <a href="/users"><span class="button">Users</span></a>
-      </div>
-      <div class="login">
-        <% if (loggedIn) { %>
-        <p>Logged in as 
-          <a href="<%=`/users/${currentUser._id}`%>">
-          <%= currentUser.fullName %></a>
-          <a href="/users/logout">Log out</a> 
-        </p>
-        <% } else { %>
-        <a href="/users/login">Log in</a>
-       <% } %>
+         <%- include('courses/_coursesModal.ejs') %> 
+
+        <div class="login">
+          <% if (loggedIn) { %>
+          <p>Logged in as 
+            <a href="<%=`/users/${currentUser._id}`%>">
+            <%= currentUser.fullName %></a>
+            <a href="/users/logout">Log out</a> 
+          </p>
+          <% } else { %>
+          <a href="/users/login">Log in</a>
+         <% } %>
+        </div>
       </div>
     </div>
+
   </div>
   <div class="flashes">
     <% if (flashMessages) { %>
