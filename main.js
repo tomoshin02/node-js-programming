@@ -16,6 +16,7 @@ mongoose.set('useCreateIndex', true);
 mongoose.set('useFindAndModify', false);
 mongoose.Promise = global.Promise;
 mongoose.connect(
+  process.env.MONGODB_URI ||
   "mongodb://mongo-db:27017/recipe_db",
   {
     useNewUrlParser: true,
