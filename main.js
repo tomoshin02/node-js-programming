@@ -57,14 +57,14 @@ app.use((req, res, next) => {
 
 app.set("view engine", "ejs");
 app.use(layouts);
-app.set("port", process.env.PORT || 3000);
 app.use(express.urlencoded({
-    extended:false
+  extended:false
 }));
 app.use(express.json());
 app.use(express.static("public"));
 app.use("/", router);
 
+app.set("port", process.env.PORT || 3000);
 const server =app.listen(app.get("port"), () => {
   console.log(`The express server has started and is lisning on port :${app.get("port")}`);
 }),
