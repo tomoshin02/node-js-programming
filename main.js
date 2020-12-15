@@ -17,7 +17,7 @@ mongoose.set('useFindAndModify', false);
 mongoose.Promise = global.Promise;
 mongoose.connect(
   process.env.MONGODB_URI ||
-  "mongodb://mongo-db:27017/recipe_db" || "mongodb+srv://akazawa3101:akazawa3101@mongidb.pizxq.mongodb.net/recipe_db?retryWrites=true&w=majority",
+  "mongodb+srv://akazawa3101:akazawa3101@mongidb.pizxq.mongodb.net/mongidb?retryWrites=true&w=majority" || "mongodb://mongo-db:27017/recipe_db" ,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true
