@@ -1,5 +1,5 @@
 "use strict";
-
+const ex = 7;
 const express = require("express"),
 layouts = require("express-ejs-layouts"),
 app = express(),
